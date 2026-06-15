@@ -1,0 +1,189 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net (Default Deny)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function getUserRole() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        ? getUserData().role
+        : 'sales';
+    }
+
+    function isUserActive() {
+      return !exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        || getUserData().isActive == true;
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() && (request.auth.token.email == 'longsx110@gmail.com' || request.auth.uid == '040SrB7DPsQr7IHKF4VjGfQUqfz1');
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (getUserRole() == 'admin' || isSuperAdmin()) && isUserActive();
+    }
+
+    function isHocVu() {
+      return isSignedIn() && getUserRole() == 'hoc_vu' && isUserActive();
+    }
+
+    function isSales() {
+      return isSignedIn() && getUserRole() == 'sales' && isUserActive();
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // 2. Entity schemas
+    function isValidUser(data) {
+      return data.keys().hasAll(['id', 'name', 'email', 'role', 'isActive'])
+          && (data.keys().size() >= 5 && data.keys().size() <= 7)
+          && data.id is string && data.id.size() <= 128
+          && data.name is string && data.name.size() <= 200
+          && data.email is string && data.email.size() <= 200
+          && data.role in ['admin', 'hoc_vu', 'sales']
+          && data.isActive is bool
+          && (!data.keys().hasAny(['createdAt']) || (data.createdAt is string && data.createdAt.size() <= 50))
+          && (!data.keys().hasAny(['updatedAt']) || (data.updatedAt is string && data.updatedAt.size() <= 50));
+    }
+
+    function isValidClass(data) {
+      return data.keys().hasAll(['id', 'name', 'level', 'teacher', 'schedule', 'startDate', 'room', 'enrolledCount', 'maxCapacity', 'status', 'notes', 'createdAt', 'updatedAt'])
+          && (data.keys().size() >= 13 && data.keys().size() <= 15)
+          && data.id is string && data.id.size() <= 128
+          && data.name is string && data.name.size() <= 200
+          && data.level is string && data.level.size() <= 100
+          && data.teacher is string && data.teacher.size() <= 200
+          && data.schedule is string && data.schedule.size() <= 400
+          && data.startDate is string && data.startDate.size() <= 20
+          && data.room is string && data.room.size() <= 100
+          && data.enrolledCount is int && data.enrolledCount >= 0 && data.enrolledCount <= data.maxCapacity
+          && data.maxCapacity is int && data.maxCapacity > 0
+          && data.status in ['active', 'upcoming', 'full', 'cancelled']
+          && data.notes is string && data.notes.size() <= 2000
+          && data.createdAt is string && data.createdAt.size() <= 50
+          && data.updatedAt is string && data.updatedAt.size() <= 50
+          && (!data.keys().hasAny(['syllabusUrl']) || (data.syllabusUrl is string && data.syllabusUrl.size() <= 1000))
+          && (!data.keys().hasAny(['syllabusName']) || (data.syllabusName is string && data.syllabusName.size() <= 400));
+    }
+
+    function isValidClassRequest(data) {
+      return data.id is string && data.id.size() <= 128
+          && data.requestedLevel is string && data.requestedLevel.size() <= 100
+          && data.preferredSchedule is string && data.preferredSchedule.size() <= 400
+          && data.expectedStartDate is string && data.expectedStartDate.size() <= 20
+          && data.interestCount is int && data.interestCount >= 0
+          && data.targetHeadcount is int && data.targetHeadcount > 0
+          && data.notes is string && data.notes.size() <= 2000
+          && data.submittedBy is string && data.submittedBy.size() <= 128
+          && data.submittedByName is string && data.submittedByName.size() <= 200
+          && data.status in ['pending', 'approved', 'rejected']
+          && data.createdAt is string && data.createdAt.size() <= 50
+          && data.updatedAt is string && data.updatedAt.size() <= 50
+          && (!data.keys().hasAny(['approvedClassId']) || (data.approvedClassId is string && data.approvedClassId.size() <= 128))
+          && (!data.keys().hasAny(['rejectionReason']) || (data.rejectionReason is string && data.rejectionReason.size() <= 1000))
+          && (!data.keys().hasAny(['documentUrl']) || (data.documentUrl is string && data.documentUrl.size() <= 1000))
+          && (!data.keys().hasAny(['documentName']) || (data.documentName is string && data.documentName.size() <= 400));
+    }
+
+    function isValidEnrollmentLog(data) {
+      return data.keys().hasAll(['id', 'classId', 'className', 'updatedBy', 'updatedByName', 'previousCount', 'newCount', 'timestamp'])
+          && data.keys().size() == 8
+          && data.id is string && data.id.size() <= 128
+          && data.classId is string && data.classId.size() <= 128
+          && data.className is string && data.className.size() <= 200
+          && data.updatedBy is string && data.updatedBy.size() <= 128
+          && data.updatedByName is string && data.updatedByName.size() <= 200
+          && data.previousCount is int && data.previousCount >= 0
+          && data.newCount is int && data.newCount >= 0
+          && data.timestamp is string && data.timestamp.size() <= 50;
+    }
+
+    function isValidAuditLog(data) {
+      return data.keys().hasAll(['id', 'userId', 'userName', 'userRole', 'action', 'details', 'timestamp'])
+          && data.keys().size() == 7
+          && data.id is string && data.id.size() <= 128
+          && data.userId is string && data.userId.size() <= 128
+          && data.userName is string && data.userName.size() <= 200
+          && data.userRole in ['admin', 'hoc_vu', 'sales']
+          && data.action is string && data.action.size() <= 500
+          && data.details is string && data.details.size() <= 2000
+          && data.timestamp is string && data.timestamp.size() <= 50;
+    }
+
+    // Collections matches
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && (
+        isSuperAdmin() ||
+        (isAdmin() && request.resource.data.role != 'admin') ||
+        (request.auth.uid == userId && request.resource.data.role != 'admin')
+      ) && isValidUser(request.resource.data);
+      allow update: if isSignedIn() && (
+        isSuperAdmin() ||
+        (isAdmin() && resource.data.role != 'admin' && request.resource.data.role != 'admin') ||
+        (request.auth.uid == userId && request.resource.data.role == resource.data.role)
+      ) && isValidUser(request.resource.data);
+      allow delete: if isSignedIn() && (
+        isSuperAdmin() ||
+        (isAdmin() && resource.data.role != 'admin')
+      );
+    }
+
+    match /classes/{classId} {
+      allow read: if isSignedIn() && (isUserActive() || isSuperAdmin());
+      allow create: if (isAdmin() || isSuperAdmin()) && isValidClass(request.resource.data);
+      allow update: if (isAdmin() || isHocVu() || isSales() || isSuperAdmin()) && isValidClass(request.resource.data) && (
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['enrolledCount', 'updatedAt'])) ||
+        (isAdmin() || isHocVu() || isSuperAdmin())
+      );
+      allow delete: if isAdmin() || isSuperAdmin();
+    }
+
+    match /classRequests/{requestId} {
+      allow read: if isSignedIn() && (isUserActive() || isSuperAdmin()) && (
+        isAdmin() ||
+        isHocVu() ||
+        isSuperAdmin() ||
+        resource.data.submittedBy == request.auth.uid
+      );
+      allow create: if isSignedIn() && (isUserActive() || isSuperAdmin()) && (request.resource.data.submittedBy == request.auth.uid || isSuperAdmin()) && isValidClassRequest(request.resource.data);
+      allow update: if isSignedIn() && (isUserActive() || isSuperAdmin()) && isValidClassRequest(request.resource.data) && (
+        isSuperAdmin() || isHocVu() || isAdmin() || (resource.data.submittedBy == request.auth.uid && resource.data.status == 'pending')
+      );
+      allow delete: if isSuperAdmin() || isAdmin() || (resource.data.submittedBy == request.auth.uid && resource.data.status == 'pending');
+    }
+
+    match /enrollmentLogs/{logId} {
+      allow list, get: if isSignedIn() && (isUserActive() || isSuperAdmin()) && (
+        isAdmin() ||
+        isSuperAdmin() ||
+        resource.data.updatedBy == request.auth.uid
+      );
+      allow create: if isSignedIn() && (isUserActive() || isSuperAdmin()) && isValidEnrollmentLog(request.resource.data);
+      allow update, delete: if isSuperAdmin();
+    }
+
+    match /auditLogs/{logId} {
+      allow list, get: if isSignedIn() && (isUserActive() || isSuperAdmin()) && (
+        isAdmin() ||
+        isSuperAdmin() ||
+        resource.data.userId == request.auth.uid
+      );
+      allow create: if isSignedIn() && (isUserActive() || isSuperAdmin()) && isValidAuditLog(request.resource.data);
+      allow update, delete: if isSuperAdmin();
+    }
+  }
+}

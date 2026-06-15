@@ -1,0 +1,119 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and role management details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "hoc_vu", "sales"] },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "email", "role", "isActive"]
+    },
+    "Class": {
+      "title": "Class",
+      "description": "Class academic details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "level": { "type": "string" },
+        "teacher": { "type": "string" },
+        "schedule": { "type": "string" },
+        "startDate": { "type": "string" },
+        "room": { "type": "string" },
+        "enrolledCount": { "type": "integer" },
+        "maxCapacity": { "type": "integer" },
+        "status": { "type": "string", "enum": ["active", "upcoming", "full", "cancelled"] },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "syllabusUrl": { "type": "string" },
+        "syllabusName": { "type": "string" }
+      },
+      "required": ["id", "name", "level", "teacher", "schedule", "startDate", "room", "enrolledCount", "maxCapacity", "status", "createdAt", "updatedAt"]
+    },
+    "ClassRequest": {
+      "title": "ClassRequest",
+      "description": "Proposed new class submitted by staff",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "requestedLevel": { "type": "string" },
+        "preferredSchedule": { "type": "string" },
+        "expectedStartDate": { "type": "string" },
+        "interestCount": { "type": "integer" },
+        "targetHeadcount": { "type": "integer" },
+        "notes": { "type": "string" },
+        "submittedBy": { "type": "string" },
+        "submittedByName": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "rejectionReason": { "type": "string" },
+        "approvedClassId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "documentUrl": { "type": "string" },
+        "documentName": { "type": "string" }
+      },
+      "required": ["id", "requestedLevel", "preferredSchedule", "expectedStartDate", "interestCount", "targetHeadcount", "notes", "submittedBy", "submittedByName", "status", "createdAt", "updatedAt"]
+    },
+    "EnrollmentLog": {
+      "title": "EnrollmentLog",
+      "description": "Changes in class capacity logs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "classId": { "type": "string" },
+        "className": { "type": "string" },
+        "updatedBy": { "type": "string" },
+        "updatedByName": { "type": "string" },
+        "previousCount": { "type": "integer" },
+        "newCount": { "type": "integer" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "classId", "className", "updatedBy", "updatedByName", "previousCount", "newCount", "timestamp"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Action log history",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userRole": { "type": "string", "enum": ["admin", "hoc_vu", "sales"] },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "userName", "userRole", "action", "details", "timestamp"]
+    }
+  },
+  "firestore": {
+    "users": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Collection of user application roles and metadata"
+    },
+    "classes": {
+      "schema": { "$ref": "#/entities/Class" },
+      "description": "Collection of academic learning classes"
+    },
+    "classRequests": {
+      "schema": { "$ref": "#/entities/ClassRequest" },
+      "description": "Collection of suggested class setup proposals"
+    },
+    "enrollmentLogs": {
+      "schema": { "$ref": "#/entities/EnrollmentLog" },
+      "description": "Collection of enrollment modification histories"
+    },
+    "auditLogs": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Chronological history logs of administrative operations"
+    }
+  }
+}

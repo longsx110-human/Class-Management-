@@ -1,0 +1,6 @@
+{
+  "name": "Sang Tao Xanh Class Management",
+  "description": "Unified dashboard to replace manual chat requests and sheets updates for school class management across Sales, Academic, and Admin teams.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
