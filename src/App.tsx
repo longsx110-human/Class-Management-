@@ -279,7 +279,7 @@ export default function App() {
 
   // 2. Realtime subscriber hooks - only start once authenticated
   useEffect(() => {
-    if (!authStateUser) {
+    if (!currentUser) {
       // Offline fallback
       setUsers(INITIAL_USERS);
       setClasses(INITIAL_CLASSES);
@@ -292,7 +292,7 @@ export default function App() {
       bootstrapDatabaseIfEmpty();
     });
 
-    const isAdminUser = authStateUser.uid === '040SrB7DPsQr7IHKF4VjGfQUqfz1' || authStateUser.email === 'longsx110@gmail.com';
+    const isAdminUser = currentUser.role === 'admin' || currentUser.email === 'longsx110@gmail.com';
 
     const unsubClasses = onSnapshot(collection(db, 'classes'), (snap) => {
       const list: Class[] = [];
@@ -306,7 +306,7 @@ export default function App() {
 
     const usersQuery = isAdminUser 
       ? collection(db, 'users')
-      : query(collection(db, 'users'), where('id', '==', authStateUser.uid));
+      : query(collection(db, 'users'), where('id', '==', currentUser.id));
 
     const unsubUsers = onSnapshot(usersQuery, (snap) => {
       const list: User[] = [];
@@ -320,7 +320,7 @@ export default function App() {
 
     const requestsQuery = isAdminUser
       ? collection(db, 'classRequests')
-      : query(collection(db, 'classRequests'), where('submittedBy', '==', authStateUser.uid));
+      : query(collection(db, 'classRequests'), where('submittedBy', '==', currentUser.id));
 
     const unsubRequests = onSnapshot(requestsQuery, (snap) => {
       const list: ClassRequest[] = [];
@@ -334,7 +334,7 @@ export default function App() {
 
     const enrollmentLogsQuery = isAdminUser
       ? collection(db, 'enrollmentLogs')
-      : query(collection(db, 'enrollmentLogs'), where('updatedBy', '==', authStateUser.uid));
+      : query(collection(db, 'enrollmentLogs'), where('updatedBy', '==', currentUser.id));
 
     const unsubEnrollmentLogs = onSnapshot(enrollmentLogsQuery, (snap) => {
       const list: EnrollmentLog[] = [];
@@ -349,7 +349,7 @@ export default function App() {
 
     const auditLogsQuery = isAdminUser
       ? collection(db, 'auditLogs')
-      : query(collection(db, 'auditLogs'), where('userId', '==', authStateUser.uid));
+      : query(collection(db, 'auditLogs'), where('userId', '==', currentUser.id));
 
     const unsubAuditLogs = onSnapshot(auditLogsQuery, (snap) => {
       const list: AuditLog[] = [];
@@ -369,7 +369,7 @@ export default function App() {
       unsubEnrollmentLogs();
       unsubAuditLogs();
     };
-  }, [authStateUser]);
+  }, [currentUser?.id, currentUser?.role]);
 
   // AUTH HANDLERS
   const handleGoogleLogin = async () => {
