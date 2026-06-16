@@ -16,6 +16,33 @@ interface ClassDashboardProps {
   onConfirmClassOpening?: (classId: string) => void;
 }
 
+const CLASS_LEVELS = [
+  "Khóa học giao tiếp",
+  "Khóa học giao tiếp 1:1",
+  "Chương trình trải nghiệm",
+  "Smartkids",
+  "Superkids",
+  "Teen",
+  "TOEIC 2 kỹ năng Level A (nghe đọc 400+)",
+  "TOEIC 2 kỹ năng Level B (nghe đọc 500+)",
+  "TOEIC 4 kỹ năng Level A (nghe đọc 400+, nói viêt 120+)",
+  "TOEIC 4 kỹ năng Level B (nghe đọc 500+, nói viết 150+)",
+  "HSK 1-3",
+  "HSK 4",
+  "HSK 5",
+  "Giao tiếp cơ bản",
+  "Giao tiếp nâng cao",
+  "Giao tiếp 1:1",
+  "Lớp online giao tiếp",
+  "IELTS Pre (<4.0)",
+  "IELTS Cơ bản (4.0 - 4.5)",
+  "IELTS Tiền trung cấp (4.5 - 5.0)",
+  "IELTS Trung Cấp (5.0 - 5.5)",
+  "IELTS Trung cao cấp (5.5 - 6.0)",
+  "IELTS Cao Cấp (6.0 - 6.5)",
+  "IELTS Luyệt đề (6.5+)",
+];
+
 export const ClassDashboard: React.FC<ClassDashboardProps> = ({
   classes,
   currentUser,
@@ -42,7 +69,7 @@ export const ClassDashboard: React.FC<ClassDashboardProps> = ({
 
   // New Class Form state (Admin only can directly create, or approve requests)
   const [newClassName, setNewClassName] = useState('');
-  const [newClassLevel, setNewClassLevel] = useState('A1');
+  const [newClassLevel, setNewClassLevel] = useState(CLASS_LEVELS[0]);
   const [newClassTeacher, setNewClassTeacher] = useState('');
   const [newClassSchedule, setNewClassSchedule] = useState('');
   const [newClassStartDate, setNewClassStartDate] = useState('');
@@ -465,17 +492,9 @@ export const ClassDashboard: React.FC<ClassDashboardProps> = ({
               id="filter-level"
             >
               <option value="all">🎓 Tất cả cấp độ</option>
-              {uniqueLevels.map((lvl) => (
+              {CLASS_LEVELS.map((lvl) => (
                 <option key={lvl} value={lvl}>{lvl}</option>
               ))}
-              <option value="A1">A1</option>
-              <option value="A2">A2</option>
-              <option value="B1">B1</option>
-              <option value="B2">B2</option>
-              <option value="IELTS 5.0">IELTS 5.0</option>
-              <option value="IELTS 6.5">IELTS 6.5</option>
-              <option value="TOEIC">TOEIC</option>
-              <option value="Kids">Kids</option>
             </select>
           </div>
 
@@ -989,15 +1008,9 @@ export const ClassDashboard: React.FC<ClassDashboardProps> = ({
                     onChange={(e) => setEditingClass({ ...editingClass, level: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white"
                   >
-                    <option value="A1">A1</option>
-                    <option value="A2">A2</option>
-                    <option value="B1">B1</option>
-                    <option value="B2">B2</option>
-                    <option value="IELTS 5.0">IELTS 5.0</option>
-                    <option value="IELTS 6.5">IELTS 6.5</option>
-                    <option value="TOEIC">TOEIC</option>
-                    <option value="Kids">Kids</option>
-                    <option value="Other">Other</option>
+                    {CLASS_LEVELS.map((lvl) => (
+                      <option key={lvl} value={lvl}>{lvl}</option>
+                    ))}
                   </select>
                 </div>
                 <div>
@@ -1172,15 +1185,9 @@ export const ClassDashboard: React.FC<ClassDashboardProps> = ({
                     onChange={(e) => setNewClassLevel(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white"
                   >
-                    <option value="A1">A1</option>
-                    <option value="A2">A2</option>
-                    <option value="B1">B1</option>
-                    <option value="B2">B2</option>
-                    <option value="IELTS 5.0">IELTS 5.0</option>
-                    <option value="IELTS 6.5">IELTS 6.5</option>
-                    <option value="TOEIC">TOEIC</option>
-                    <option value="Kids">Kids</option>
-                    <option value="Other">Other</option>
+                    {CLASS_LEVELS.map((lvl) => (
+                      <option key={lvl} value={lvl}>{lvl}</option>
+                    ))}
                   </select>
                 </div>
                 <div>
