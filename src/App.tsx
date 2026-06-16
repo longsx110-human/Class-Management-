@@ -982,7 +982,7 @@ export default function App() {
                       placeholder="ten.nhanvien@sangtaoxanh.edu.vn"
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-550"
+                      className="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       id="login-email-input"
                     />
                   </div>
@@ -1000,7 +1000,7 @@ export default function App() {
                       placeholder="••••••••"
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-550"
+                      className="w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       id="login-password-input"
                     />
                   </div>
@@ -1146,7 +1146,7 @@ export default function App() {
                         className={`py-2 px-3 md:px-4 rounded-lg font-bold text-xs md:text-sm transition-all flex items-center gap-1.5 whitespace-nowrap ${
                           activeTab === 'dashboard' 
                             ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/10 font-extrabold' 
-                            : 'text-slate-600 hover:bg-slate-150 hover:text-slate-800'
+                            : 'text-slate-600 hover:bg-slate-100 hover:text-slate-800'
                         }`}
                         id="nav-tab-dashboard"
                       >
@@ -1159,7 +1159,7 @@ export default function App() {
                         className={`py-2 px-3 md:px-4 rounded-lg font-bold text-xs md:text-sm transition-all flex items-center gap-1.5 whitespace-nowrap relative ${
                           activeTab === 'requests' 
                             ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/10 font-extrabold' 
-                            : 'text-slate-600 hover:bg-slate-150 hover:text-slate-800'
+                            : 'text-slate-600 hover:bg-slate-100 hover:text-slate-800'
                         }`}
                         id="nav-tab-requests"
                       >
@@ -1177,7 +1177,7 @@ export default function App() {
                         className={`py-2 px-3 md:px-4 rounded-lg font-bold text-xs md:text-sm transition-all flex items-center gap-1.5 whitespace-nowrap relative ${
                           activeTab === 'enrollment' 
                             ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/10 font-extrabold' 
-                            : 'text-slate-600 hover:bg-slate-150'
+                            : 'text-slate-600 hover:bg-slate-100'
                         }`}
                         id="nav-tab-enrollment"
                       >
@@ -1196,7 +1196,7 @@ export default function App() {
                           className={`py-2 px-3 md:px-4 rounded-lg font-bold text-xs md:text-sm transition-all flex items-center gap-1.5 whitespace-nowrap ${
                             activeTab === 'users' 
                               ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/10 font-extrabold' 
-                              : 'text-slate-600 hover:bg-slate-150'
+                              : 'text-slate-600 hover:bg-slate-100'
                           }`}
                           id="nav-tab-users"
                         >
@@ -1211,7 +1211,7 @@ export default function App() {
                           className={`py-2 px-3 md:px-4 rounded-lg font-bold text-xs md:text-sm transition-all flex items-center gap-1.5 whitespace-nowrap ${
                             activeTab === 'audit_logs' 
                               ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/10 font-extrabold' 
-                              : 'text-slate-600 hover:bg-slate-150'
+                              : 'text-slate-600 hover:bg-slate-100'
                           }`}
                           id="nav-tab-logs"
                         >

@@ -335,7 +335,7 @@ export const RequestManager: React.FC<RequestManagerProps> = ({
                         </button>
                         <button
                           type="submit"
-                          className="px-4 py-1.5 text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-650 hover:from-emerald-700 hover:to-teal-700 text-white rounded shadow-md transition-all"
+                          className="px-4 py-1.5 text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded shadow-md transition-all"
                           id={`btn-approve-confirm-${req.id}`}
                         >
                           Xác nhận Khai Sinh Lớp Học

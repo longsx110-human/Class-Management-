@@ -74,18 +74,18 @@ export const AdminUserTracker: React.FC<AdminUserTrackerProps> = ({
     <div className="space-y-6 font-sans">
       {/* Header Banner */}
       <div className="relative overflow-hidden bg-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-800">
-        <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 bg-indigo-650 opacity-20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 bg-indigo-600 opacity-20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute left-1/3 bottom-0 w-80 h-80 bg-teal-500 opacity-10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-red-650 to-orange-550 text-white font-extrabold rounded-full text-[10px] uppercase tracking-widest leading-none shadow-md">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-red-600 to-orange-500 text-white font-extrabold rounded-full text-[10px] uppercase tracking-widest leading-none shadow-md">
               👑 Trưởng Ban Quản Trị Hệ Thống
             </div>
             <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
               Bảng Cấu Hình Admin Quốc Tế
             </h1>
-            <p className="text-slate-350 text-sm md:text-base max-w-xl font-medium">
+            <p className="text-slate-300 text-sm md:text-base max-w-xl font-medium">
               Chào mừng bạn đến với trung tâm giám sát hoạt động. Tại đây bạn có thể kiểm thử, theo dõi số liệu và truy cập trực tiếp dashboard của bất kỳ thành viên nào.
             </p>
           </div>
@@ -93,7 +93,7 @@ export const AdminUserTracker: React.FC<AdminUserTrackerProps> = ({
           <div className="bg-slate-800 bg-opacity-40 backdrop-blur-md border border-slate-700 rounded-2xl p-5 shrink-0 flex flex-col gap-1 justify-center shadow-lg">
             <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Trạng thái Cơ sở dữ liệu:</span>
             <div className="flex items-center gap-2 mt-0.5">
-              <span className="h-2.5 w-2.5 bg-emerald-450 rounded-full animate-pulse shadow-md shadow-emerald-500/50" />
+              <span className="h-2.5 w-2.5 bg-emerald-500 rounded-full animate-pulse shadow-md shadow-emerald-500/50" />
               <span className="text-sm font-bold text-slate-200">Đồng bộ trực tiếp Cloud DB</span>
             </div>
           </div>
@@ -175,7 +175,7 @@ export const AdminUserTracker: React.FC<AdminUserTrackerProps> = ({
               </button>
               <button
                 onClick={() => setRoleFilter('hoc_vu')}
-                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${roleFilter === 'hoc_vu' ? 'bg-white text-teal-750 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${roleFilter === 'hoc_vu' ? 'bg-white text-teal-700 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
               >
                 Học vụ
               </button>
@@ -219,7 +219,7 @@ export const AdminUserTracker: React.FC<AdminUserTrackerProps> = ({
                 >
                   <div className="flex items-start gap-4 flex-1">
                     <div className="relative shrink-0">
-                      <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-150 flex items-center justify-center font-extrabold text-indigo-700 text-md">
+                      <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center font-extrabold text-indigo-700 text-md">
                         {u.name.split(' ').pop()?.substring(0, 2) || 'TV'}
                       </div>
                       <span className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white ${u.isActive ? 'bg-emerald-500 shadow-inner' : 'bg-slate-300'}`} />
@@ -275,7 +275,7 @@ export const AdminUserTracker: React.FC<AdminUserTrackerProps> = ({
                   <div className="flex items-center justify-end shrink-0 border-t lg:border-t-0 border-slate-100 pt-4 lg:pt-0">
                     <button
                       onClick={() => onSelectUser(u)}
-                      className="w-full lg:w-auto px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-650 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/10 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+                      className="w-full lg:w-auto px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/10 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
                       id={`impersonate-btn-${u.id}`}
                     >
                       <span>Xem Dashboard</span>
