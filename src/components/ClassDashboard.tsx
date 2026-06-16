@@ -610,7 +610,7 @@ export const ClassDashboard: React.FC<ClassDashboardProps> = ({
                         {cls.name}
                       </h4>
                     </div>
-                    {currentUser.role === 'admin' && (
+                    {(currentUser.role === 'admin' || currentUser.role === 'hoc_vu') && (
                       <button
                         onClick={() => setEditingClass(cls)}
                         className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-blue-600 hover:bg-slate-50 transition-colors shrink-0"
@@ -951,7 +951,7 @@ export const ClassDashboard: React.FC<ClassDashboardProps> = ({
                             </button>
                           )}
 
-                          {currentUser.role === 'admin' && (
+                          {(currentUser.role === 'admin' || currentUser.role === 'hoc_vu') && (
                             <button
                               onClick={() => setEditingClass(cls)}
                               className="p-1.5 rounded border border-slate-200 text-slate-500 hover:text-emerald-600 hover:bg-slate-50 transition-colors inline-flex items-center"
