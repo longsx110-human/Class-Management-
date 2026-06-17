@@ -188,7 +188,9 @@ export const ClassRequestForm: React.FC<ClassRequestFormProps> = ({
                   <option value="B2">🎓 Cấp độ B2 (Trên trung cấp)</option>
                   <option value="IELTS 5.0">🎖️ IELTS 5.0 đạt đầu ra</option>
                   <option value="IELTS 6.5">🎖️ IELTS 6.5 học thuật lý tưởng</option>
+                  <option value="IELTS 1-1">🎖️ IELTS 1-1</option>
                   <option value="TOEIC">💼 TOEIC chuẩn công sở</option>
+                  <option value="TOEIC 1-1">💼 TOEIC 1-1</option>
                   <option value="Kids">👶 Kids Anh Ngữ Thiếu Nhi</option>
                   <option value="Other">❓ Khác (Ghi chú chi tiết)</option>
                 </select>

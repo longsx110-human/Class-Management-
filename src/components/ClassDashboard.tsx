@@ -41,6 +41,8 @@ const CLASS_LEVELS = [
   "IELTS Trung cao cấp (5.5 - 6.0)",
   "IELTS Cao Cấp (6.0 - 6.5)",
   "IELTS Luyệt đề (6.5+)",
+  "IELTS 1-1",
+  "TOEIC 1-1",
 ];
 
 export const ClassDashboard: React.FC<ClassDashboardProps> = ({
