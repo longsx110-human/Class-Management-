@@ -294,6 +294,30 @@ export default function App() {
 
     const isAdminUser = currentUser.role === 'admin' || currentUser.email === 'longsx110@gmail.com';
 
+    const unsubCurrentUser = onSnapshot(doc(db, 'users', currentUser.id), async (docSnap) => {
+      if (!docSnap.exists()) {
+        setCurrentUser(null);
+        localStorage.removeItem('stx_active_user');
+        await signOut(auth);
+        showToast('Tài khoản của bạn đã bị xóa khỏi hệ thống.', 'error');
+        return;
+      }
+      
+      const updatedUser = docSnap.data() as User;
+      if (!updatedUser.isActive) {
+        setCurrentUser(null);
+        localStorage.removeItem('stx_active_user');
+        await signOut(auth);
+        showToast('🔒 Tài khoản của bạn đã bị tạm khóa. Vui lòng liên hệ Admin!', 'error');
+        return;
+      }
+
+      if (updatedUser.role !== currentUser.role || updatedUser.name !== currentUser.name) {
+        setCurrentUser(updatedUser);
+        localStorage.setItem('stx_active_user', JSON.stringify(updatedUser));
+      }
+    });
+
     const unsubClasses = onSnapshot(collection(db, 'classes'), (snap) => {
       const list: Class[] = [];
       snap.forEach((doc) => {
@@ -363,6 +387,7 @@ export default function App() {
     });
 
     return () => {
+      unsubCurrentUser();
       unsubClasses();
       unsubUsers();
       unsubRequests();
@@ -451,12 +476,12 @@ export default function App() {
       
       if (userDoc.exists()) {
         appUser = userDoc.data() as User;
-      } else {
+      } else if (email === 'longsx110@gmail.com') {
         appUser = {
           id: fbUid,
           name: email.split('@')[0],
           email: email,
-          role: email === 'longsx110@gmail.com' ? 'admin' : 'sales',
+          role: 'admin',
           isActive: true
         };
         const cleanUser = {
@@ -467,6 +492,10 @@ export default function App() {
           isActive: appUser.isActive
         };
         await setDoc(userDocRef, cleanUser);
+      } else {
+        await signOut(auth);
+        showToast('Tài khoản này hiện chưa được Admin tạo trên hệ thống, hoặc đã bị xóa.', 'error');
+        return;
       }
 
       if (!appUser.isActive) {
@@ -520,7 +549,8 @@ export default function App() {
     
     try {
       await setDoc(doc(db, 'classes', newClass.id), newClass);
-      await logAction(currentUser, 'Thêm mới Lớp học', `Admin trực tiếp tạo lớp học mới ${newClass.name} (ID: ${newClass.id})`);
+      const roleName = currentUser.role === 'admin' ? 'Admin' : 'Học vụ';
+      await logAction(currentUser, 'Thêm mới Lớp học', `${roleName} trực tiếp tạo lớp học mới ${newClass.name} (ID: ${newClass.id})`);
       showToast(`Đã tạo trực tiếp lớp học mới ${newClass.name}!`, 'success');
     } catch (error) {
       handleFirestoreError(error, OperationType.CREATE, `classes/${newClass.id}`);

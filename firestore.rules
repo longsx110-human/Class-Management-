@@ -144,7 +144,7 @@ service cloud.firestore {
 
     match /classes/{classId} {
       allow read: if isSignedIn() && (isUserActive() || isSuperAdmin());
-      allow create: if (isAdmin() || isSuperAdmin()) && isValidClass(request.resource.data);
+      allow create: if (isAdmin() || isHocVu() || isSuperAdmin()) && isValidClass(request.resource.data);
       allow update: if (isAdmin() || isHocVu() || isSales() || isSuperAdmin()) && isValidClass(request.resource.data) && (
         (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['enrolledCount', 'updatedAt'])) ||
         (isAdmin() || isHocVu() || isSuperAdmin())
