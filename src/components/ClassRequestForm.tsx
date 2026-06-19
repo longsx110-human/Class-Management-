@@ -3,6 +3,7 @@ import { PlusCircle, Calendar, Users, FileText, CheckCircle2, XCircle, AlertCirc
 import { ClassRequest, User } from '../types';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebase';
+import { CLASS_LEVELS } from './ClassDashboard';
 
 interface ClassRequestFormProps {
   currentUser: User;
@@ -16,9 +17,9 @@ export const ClassRequestForm: React.FC<ClassRequestFormProps> = ({
   onSubmitRequest
 }) => {
   // Form fields
-  const [requestedLevel, setRequestedLevel] = useState('A1');
+  const [requestedLevel, setRequestedLevel] = useState(CLASS_LEVELS[0]);
   const [preferredDays, setPreferredDays] = useState<string[]>([]);
-  const [preferredTime, setPreferredTime] = useState('18:00 - 19:30');
+  const [preferredTime, setPreferredTime] = useState('');
   const [customDays, setCustomDays] = useState('');
   const [expectedStartDate, setExpectedStartDate] = useState('');
   const [interestCount, setInterestCount] = useState(5);
@@ -35,7 +36,6 @@ export const ClassRequestForm: React.FC<ClassRequestFormProps> = ({
   const [activeTab, setActiveTab] = useState<'create' | 'history'>('create');
 
   const availableDays = ['T2/T4/T6', 'T3/T5/T7', 'T7/CN'];
-  const commonTimes = ['08:30 - 10:00', '14:00 - 15:30', '18:00 - 19:30', '19:30 - 21:00'];
 
   // Toggle preferred day select
   const handleDaySelect = (day: string) => {
@@ -182,17 +182,11 @@ export const ClassRequestForm: React.FC<ClassRequestFormProps> = ({
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-semibold"
                   id="req-level"
                 >
-                  <option value="A1">🎓 Cấp độ A1 (Căn bản)</option>
-                  <option value="A2">🎓 Cấp độ A2 (Giao tiếp cơ bản)</option>
-                  <option value="B1">🎓 Cấp độ B1 (Trung cấp)</option>
-                  <option value="B2">🎓 Cấp độ B2 (Trên trung cấp)</option>
-                  <option value="IELTS 5.0">🎖️ IELTS 5.0 đạt đầu ra</option>
-                  <option value="IELTS 6.5">🎖️ IELTS 6.5 học thuật lý tưởng</option>
-                  <option value="IELTS 1-1">🎖️ IELTS 1-1</option>
-                  <option value="TOEIC">💼 TOEIC chuẩn công sở</option>
-                  <option value="TOEIC 1-1">💼 TOEIC 1-1</option>
-                  <option value="Kids">👶 Kids Anh Ngữ Thiếu Nhi</option>
-                  <option value="Other">❓ Khác (Ghi chú chi tiết)</option>
+                  {CLASS_LEVELS.map((level) => (
+                    <option key={level} value={level}>
+                      🎓 {level}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -257,16 +251,14 @@ export const ClassRequestForm: React.FC<ClassRequestFormProps> = ({
 
                 {/* Common Time slots */}
                 <div className="space-y-1.5">
-                  <span className="text-xs text-slate-400 font-medium font-bold">Chọn Khung giờ (Ca học)</span>
-                  <select
+                  <span className="text-xs text-slate-400 font-medium font-bold">Khung giờ học</span>
+                  <input
+                    type="text"
                     value={preferredTime}
                     onChange={(e) => setPreferredTime(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white font-semibold"
-                  >
-                    {commonTimes.map((time) => (
-                      <option key={time} value={time}>{time}</option>
-                    ))}
-                  </select>
+                    placeholder="Ví dụ: 19:00 - 21:00 hoặc 19:30 - 21:00"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-semibold placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
                 </div>
               </div>
             </div>

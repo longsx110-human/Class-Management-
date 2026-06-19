@@ -16,7 +16,7 @@ interface ClassDashboardProps {
   onConfirmClassOpening?: (classId: string) => void;
 }
 
-const CLASS_LEVELS = [
+export const CLASS_LEVELS = [
   "Khóa học giao tiếp",
   "Khóa học giao tiếp 1:1",
   "Chương trình trải nghiệm",
