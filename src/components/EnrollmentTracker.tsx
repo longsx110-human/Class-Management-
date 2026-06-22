@@ -59,7 +59,7 @@ export const EnrollmentTracker: React.FC<EnrollmentTrackerProps> = ({
   const classSpecificLogs = enrolmentLogs => 
     enrolmentLogs.filter((log: EnrollmentLog) => log.classId === selectedClassId);
 
-  const canEdit = currentUser.role === 'admin' || currentUser.role === 'hoc_vu';
+  const canEdit = currentUser.role === 'admin' || currentUser.role === 'hoc_vu' || currentUser.role === 'sales';
   const isHocVuOrAdmin = currentUser.role === 'admin' || currentUser.role === 'hoc_vu';
 
   return (
